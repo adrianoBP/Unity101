@@ -6,6 +6,7 @@ public class Controller : MonoBehaviour
 {
     private Rigidbody body;
     private Vector3 startPosition;
+    private Vector3 startRotation;
     private new Renderer renderer;
 
     public string ButtonName;
@@ -19,6 +20,7 @@ public class Controller : MonoBehaviour
     {
         body = GetComponent<Rigidbody>();
         startPosition = body.position;
+        startRotation = body.rotation.eulerAngles;
         renderer = GetComponent<Renderer>();
     }
 
@@ -33,6 +35,20 @@ public class Controller : MonoBehaviour
 
                 var directonX = Smooth ? Input.GetAxis($"{ButtonName}X") : Input.GetAxisRaw($"{ButtonName}X");
                 var directonY = Smooth ? Input.GetAxis($"{ButtonName}Y") : Input.GetAxisRaw($"{ButtonName}Y");
+
+                //body.transform.Rotate(new Vector3()
+                //{
+                //    x = startPosition.x + directonX * Sensitivity,
+                //    y = startPosition.y,
+                //    z = startPosition.z + directonY * Sensitivity
+                //}, 0, 0);
+
+                Debug.Log($"Starting Y: {startRotation.y} - Y: {directonY * Sensitivity} - Sensitivity: {Sensitivity}");
+
+                body.transform.rotation = Quaternion.Euler(
+                    startRotation.x + directonX * Sensitivity,
+                    startRotation.y,
+                    startRotation.z + directonY * Sensitivity);
 
                 body.position = new Vector3()
                 {
