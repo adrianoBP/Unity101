@@ -14,6 +14,9 @@ public class Controller : MonoBehaviour
     public float Sensitivity = 3;
     public bool Smooth = true;
 
+    public float currentXValue;
+    public float currentZValue;
+
 
     // Start is called before the first frame update
     void Start()
@@ -34,7 +37,10 @@ public class Controller : MonoBehaviour
             case ButtonType.Joystick:
 
                 var directonX = Smooth ? Input.GetAxis($"{ButtonName}X") : Input.GetAxisRaw($"{ButtonName}X");
-                var directonY = Smooth ? Input.GetAxis($"{ButtonName}Y") : Input.GetAxisRaw($"{ButtonName}Y");
+                var directionZ = Smooth ? Input.GetAxis($"{ButtonName}Y") : Input.GetAxisRaw($"{ButtonName}Y");
+
+                currentXValue = directonX;
+                currentZValue = directionZ;
 
                 //body.transform.Rotate(new Vector3()
                 //{
@@ -43,18 +49,18 @@ public class Controller : MonoBehaviour
                 //    z = startPosition.z + directonY * Sensitivity
                 //}, 0, 0);
 
-                Debug.Log($"Starting Y: {startRotation.y} - Y: {directonY * Sensitivity} - Sensitivity: {Sensitivity}");
+                Debug.Log($"Starting Y: {startRotation.y} - Y: {directionZ * Sensitivity} - Sensitivity: {Sensitivity}");
 
                 body.transform.rotation = Quaternion.Euler(
                     startRotation.x + directonX * Sensitivity,
                     startRotation.y,
-                    startRotation.z + directonY * Sensitivity);
+                    startRotation.z + directionZ * Sensitivity);
 
                 body.position = new Vector3()
                 {
                     x = startPosition.x + directonX * Sensitivity,
                     y = startPosition.y,
-                    z = startPosition.z + directonY * Sensitivity
+                    z = startPosition.z + directionZ * Sensitivity
                 };
 
                 break;
